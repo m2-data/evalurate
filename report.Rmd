@@ -1,0 +1,65 @@
+---
+title: "Your bespoke report"
+date: '`r paste("Date:",Sys.Date())`'
+mainfont: Comfortaa
+output: 
+  pdf_document:
+    latex_engine: xelatex
+header-includes: 
+    - \usepackage[dvipsnames]{xcolor}
+params:
+  n: NA
+  n2: NA
+  num: NA
+  num2: NA
+---
+
+<!--knitr::opts_chunk$set(echo = TRUE) -->
+<!-- - \usepackage{titling} -->
+<!-- - \pretitle{\LARGE\includegraphics[width=4cm]{evalurate.png}\\[\bigskipamount]} -->
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+<!--
+![This image won't be a figure](evalurate.png)\
+-->
+
+### \textcolor{teal}{Risk Score Evaluation}
+
+Download and/or print your report. Your report will not be saved. 
+
+<!-- This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>. -->
+
+<!-- When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this: -->
+
+
+`r params$n`
+`r params$n2`
+`r params$num`
+`r params$num2`
+
+
+<!--
+```{r, comment=NA, echo=FALSE, eval=TRUE}
+# The `params` object is available in the document.
+
+params$n
+params$n2
+params$num
+params$num2
+```
+-->
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+

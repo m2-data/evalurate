@@ -1,0 +1,266 @@
+p, ul, li{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+html, body, section{
+    margin: 0;
+    padding: 0;
+    padding-inline-start: 0;
+    font-family: 'Comfortaa', Georgia, cursive;
+}
+.container-fluid {
+    padding: 0;
+    margin: 0;
+}
+.header_menu{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.header_menu ul{
+    display: none;
+    list-style: none;
+    font-size: 0.8em;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    text-align: center;
+    padding-inline-start: 0;
+}
+.header_menu li a{
+    text-decoration: none;
+    color: #FFF;
+    text-align: center;
+}
+
+.header_menu li {
+    min-width: 88px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+}
+.nav_line{
+    display: none;
+    color: #FFF;
+}
+.header-link{
+    font-size: 1em;
+}
+.header_content{
+    background-color: black;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+}
+.header_logo img{
+    padding: 15px;
+    width: 50%;
+}
+.navIcon{
+    padding-right: 20px;
+    display: none;
+}
+.mainTitle{
+    padding: 80px 20px 0;
+}
+.mainTitle h1{
+    color: #f2904d;
+    font-weight: lighter;
+}
+.mainLogo{
+    padding-top: 20px;
+    width: 90%;
+}
+.mainDetails span{
+    color: #f2904d;
+    white-space: nowrap;
+}
+.mainDetails h2{
+    color: #00b1b8;
+}
+.mainDetails {
+    display: flex;
+    flex-direction: column;
+}
+.ratingImg{
+    width: 100%;
+}
+.getReport{
+    padding: 20px;
+    background-color: #01b1b8;
+    color: #FFF;
+}
+.getReport h3{
+    font-size: 1em;
+}
+.descriptionSection{
+    padding: 20px;
+}
+.descriptionIcons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 50px 20px;
+}
+.descriptionIcons img{
+    width: 60px;
+}
+.descriptionIcons figure{
+    text-align: center;
+    font-size: 0.9em;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    min-height: 131px;
+}
+.descriptionIcons figcaption{
+    width: 200px;
+    padding: 10px;
+}
+.descriptionText h3{
+    font-size: 1.3em;
+}
+.iconsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.footerCont{
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+}
+.social img{
+    height: 30px;
+    /* padding: 10px; */
+    margin: 10px;
+}
+.social{
+    padding-top: 20px;
+}
+.footerLogo{
+    padding: 20px;
+}
+.shiny-input-container{
+  padding: 5px;
+}
+#report{
+    margin: 20px 5px;
+    width: 150px;
+    align-self: center;
+    background-color: black;
+    color: #FFF;
+    border-color: black;
+    border-radius: 8px;
+}
+.reportHead{
+    
+}
+
+
+
+/*
+MEDIA SCREEN
+*/
+
+
+@media screen and (min-width: 500px){
+    .mainLogo{
+        width: 27em;
+    }
+    .mainDetails h2 {
+        max-width: 300px;
+    }
+}
+
+
+@media screen and (min-width: 700px){
+    .nav_line{
+        padding-left: 20px;
+        display: block;
+        font-family: sans-serif;
+        font-style: italic;
+    }
+    .mainDetails{
+        flex-direction: row;
+    }
+    .ratingImg{
+        margin-top: -53px;
+        width: 60%;
+        height: 30%;
+    }
+    .mainTitle h1{
+        max-width: 500px;
+    }
+    .mainTitle{
+        padding: 80px 50px 0;
+    }
+}
+
+@media screen and (min-width: 960px){
+    .ratingImg {
+        margin-top: -82px;
+        width: 70%;
+    }
+    .mainLogo{
+        width: 27em;
+    }
+    .mainTitle h1 {
+        max-width: 628px;
+        font-size: 2.5em;
+    }
+    .mainDetails{
+        font-size: 1.2em;
+    }
+    .mainDetails h2 {
+        max-width: 350px;
+    }
+    .details{
+        max-width: 540px;
+    }
+    .descriptionIcons figcaption{
+        font-size: 1.2em;
+        width: 250px;
+    }
+    .inputs{
+      display: flex;
+      justify-content: center;
+    }
+    .shiny-input-container:nth-child(2){
+      padding-top: 45px;
+    }
+    .shiny-input-container{
+        padding: 20px;
+    }
+    .getReport{
+        display: flex;
+        flex-direction: column;
+    }
+    #report{
+        margin: 20px;
+        width: 150px;
+        align-self: center;
+    }
+    .getReportHead{
+        display: flex;
+        justify-content: center;
+    }
+    .reportHead h2{
+        font-size: 3em;
+    }
+    .reportHead h3{
+        font-size: 1.5em;
+    }
+}
+@media screen and (min-width: 1200px){
+    .ratingImg {
+        width: auto;
+        margin-top: -103px;
+    }
+    .mainTitle{
+        width: 80%;
+        margin: 0 auto;
+    }
+}
