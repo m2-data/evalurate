@@ -1,0 +1,82 @@
+\documentclass{book}
+\usepackage[dvipsnames]{xcolor}
+% \usepackage{xcolor}
+\usepackage{listings}
+\lstnewenvironment{rc}[1][]{\lstset{language=R}}{}
+\lstset{language=R} 
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.text}
+\usepackage[default]{comfortaa}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage[top=3.5cm,bottom=3.5cm,left=3cm,right=3cm]{geometry} 
+\parindent=0cm
+
+\definecolor{lightteal}{HTML}{00b2b9}
+
+\begin{document}
+
+
+
+\fancyhead[L]{\includegraphics[width=4cm]{evalurate.png}}
+\renewcommand{\headrulewidth}{0pt}
+%\addtolength{\headheight}{\baselineskip}
+%\includegraphics[width=4cm]{evalurate.png}
+\textcolor{lightteal}{\Huge Your bespoke report} \hfill \begin{tikzpicture}
+        % \node[fill=teal, text=white, circle, draw=teal] {With node};
+        \draw[fill=lightteal, draw=lightteal, rotate=-90, postaction={decorate, decoration={text along path, text color = lightteal, raise=4pt, text align={align=center, left indent=2cm}, text={|\large|Your evalurate score}, reverse path}}] (3,0) circle (1.5cm) node[text=white] [scale=4] {\textbf {A+}};
+\end{tikzpicture}
+\par
+Address
+% \color{teal}{Risk Score Evaluation}
+
+
+
+<<names, echo=FALSE>>=
+
+input$in1
+input$in2
+input$num
+input$num2
+1+2
+gplot()
+@
+
+\Sexpr{1+2}
+
+% 
+% If your script is called \url{app.R}, include it into your
+% output by doing \verb+\lstinputlisting{app.R}+ which should generate
+% something like:
+% 
+% \lstinputlisting{app.R}
+
+%\textbf{evaluate} package \citep{R-evaluate}
+
+(e.g. \texttt{echo=FALSE} will remove the R source
+code)
+
+
+
+
+
+
+The figure \ref{fig:plot1} is simple histogram.
+
+
+% Some Text \tikz\draw[red,fill=red] (0,0) circle (10ex); further text
+
+
+%bent text below
+% \begin{tikzpicture}
+% \node (One) at (-3,0) [shape=circle,draw] {One}; 
+% \node (Two) at (3,0) [shape=circle,draw] {Two};
+% \def\myshift#1{\raisebox{-2.5ex}}
+% \draw [->,thick,postaction={decorate,decoration={text along path,text align=center,text={|\sffamily\myshift|Some more bent text}}}] (One) to [bend right=45] (Two);
+% \def\myshift#1{\raisebox{1ex}}
+% \draw [->,thick,postaction={decorate,decoration={text along path,text align=center,text={|\sffamily\myshift|Some bent text}}}]      (One) to [bend left=45] (Two);
+% \end{tikzpicture}
+
+
+\end{document}

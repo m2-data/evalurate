@@ -12,9 +12,18 @@ library(knitr)
 
 #vars
 property <- c("House", "Flat", "Detached House", "Room")
-
+# buyClicked <- reactiveVal(flag = FALSE)
+# buyClicked <- FALSE
 # Define UI for application that draws a histogram
+
 ui <- fluidPage(
+  
+  # selectInput("num", "Choose a number", 1:10),
+  # conditionalPanel(
+  #   condition = "output.square",
+  #   "That's a perfect square!"
+  # ),
+  
     tags$head(
         tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
     ),
@@ -46,7 +55,41 @@ ui <- fluidPage(
             </nav> 
         </div>
     </header>
-    <main>
+    <main>'),
+    
+    
+    
+    dashboardSidebar(
+      hr(),
+      sidebarMenu(id = "menu",
+                  menuItem("Property", tabName = "property_nav", selected = TRUE),
+                  menuItem("Report", tabName = "report_nav"),
+                  menuItem("About", tabName = "readme", icon = icon("info"))
+                  
+      ),
+      
+      helpText("Developed by ", 
+               a("evalurate", href = "http://..."), ".")
+      
+    ),
+    
+    dashboardBody(
+      
+      # tags$script(HTML("$('body').addClass('fixed');")),
+      # 
+      # htmltools::tags$head(
+      #   
+      #   
+      #     
+      # ),
+    ),
+    
+    
+
+    
+    
+        
+        HTML('
         <section>
             <div class="mainTitle">
                 <img class="mainLogo" alt="evalurate main logo" src="evalurate.png">
@@ -77,6 +120,8 @@ ui <- fluidPage(
         numericInput("num2", label = h3("Loan Value"), value = 100000),
     HTML('</div>'),
         downloadButton("report", "BUY NOW"),
+    
+    
     
         HTML(
         ' 
@@ -149,12 +194,26 @@ ui <- fluidPage(
         </div>
     </footer>
         </body>'
-    )
+    ),
+  tags$script(src = "main.js")
 )
 
 #Define server logic required to draw a histogram
 server <- function(input, output) {
 
+  #conditional output
+  output$square <- reactive({
+    sqrt(as.numeric(input$num)) %% 1 == 0
+
+  })
+  outputOptions(output, 'square', suspendWhenHidden = FALSE)
+  
+  # observeEvent(buyClicked$flag, {
+  #   # buyClicked$flag.reactiveVal(TRUE)
+  #   buyClicked$flag = TRUE
+  #   print(paste0("You have chosen: ", buyClicked$flag))
+  # })
+    #pdf output
      output$report <- downloadHandler(
          # For PDF output, change this to "report.pdf"
          filename = "Evalurate report.pdf",
@@ -163,6 +222,9 @@ server <- function(input, output) {
              # case we don't have write permissions to the current working dir (which
              # can happen when deployed).
 
+           # buyClicked$flag.reactiveVal(TRUE)
+           # print(buyClicked$flag)
+           
              tempReport <- file.path(tempdir(), "report.Rmd")
              file.copy("report.Rmd", tempReport, overwrite = TRUE)
     
@@ -177,7 +239,15 @@ server <- function(input, output) {
                                params = params,
                                envir = new.env(parent = globalenv())
              )
-
+             
+             
+            
+             
+             # if(buyClicked$flag == FALSE){
+             #   buyClicked$flag.reactiveVal(TRUE)
+             #   print(buyClicked$flag)
+             # 
+             # }
          }
      )
     

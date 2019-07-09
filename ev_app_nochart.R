@@ -1,0 +1,551 @@
+library(shiny)
+library(shinydashboard)
+library(shinyjs)
+library(htmltools)
+library(dplyr)
+library(ggplot2)
+library(leaflet)
+
+
+
+##### Section 1 #####
+
+ui <- dashboardPage( 
+    dashboardHeader( disable = TRUE, title = span(tagList(icon("fab fa-connectdevelop"), "   evalurate"))),
+  dashboardSidebar( disable = TRUE,
+    hr(),
+    useShinyjs(),
+    sidebarMenu(id = "menu",
+                tags$head(tags$style(".inactiveLink {
+                            pointer-events: none;
+                           cursor: default;
+                           }")),
+                menuItem("Property", tabName = "property_nav", selected = TRUE),
+                menuItem("Report", tabName = "report_nav"),
+                menuItem("About", tabName = "readme", icon = icon("info"))
+                
+    ),
+    
+    helpText("Developed by ", 
+             a("evalurate", href = "http://..."), ".",
+             style = "padding-left:1em; padding-right:1em;position:absolute; bottom:1em; ")
+    
+  ),
+  
+  dashboardBody(
+    
+    tags$script(HTML("$('body').addClass('fixed');")),
+    
+    htmltools::tags$head(
+      
+      htmltools::tags$style(
+        
+        htmltools::HTML(
+          
+            '
+            
+            /* body */
+            .content-wrapper {
+            background: #f7f7f7;
+            height: 2500px !important;
+            }
+            /* font */
+            body, label, input, button, select, box,
+            .h1, .h2, .h3, .h4, .h5, h1, h2, h3, h4, h5 {
+            font-family: "Arial";
+            color: #161c21;
+            }
+            /* font: fix for h6 */
+            /* messes up sidebar user section if included above */
+            .h6, h6 {
+            font-family: ""Arial";
+            }
+            /* sidebar: logo */
+            .skin-blue .main-header .logo {
+            background: #f2f2f2;
+            color: #161c21;
+            font-size:22px;
+            font-family: "Arial";
+            }
+            /* sidebar: logo hover */
+            .skin-blue .main-header .logo:hover {
+            background: #f2f2f2;
+            }
+            /* sidebar: collapse button  */
+            .skin-blue .main-header .navbar .sidebar-toggle {
+            background: #f7f7f7;
+            color: #161c21;
+            }
+            /* sidebar: collapse button hover */
+            .skin-blue .main-header .navbar .sidebar-toggle:hover {
+            background: #161c21;
+            color: #f7f7f7;
+            }
+            /* header */
+            .skin-blue .main-header .navbar {
+            background: #f7f7f7;
+            }
+            /* sidebar*/
+            .skin-blue .main-sidebar {
+            background: #f2f2f2;
+            }
+            /* sidebar menu */
+            .main-sidebar .user-panel, .sidebar-menu, .sidebar-menu>li.header {
+            background: #f2f2f2;
+            font-size: 13px;
+            font-family: "Arial";
+            }
+            /* sidebar: tabs */
+            .skin-blue .main-sidebar .sidebar .sidebar-menu a {
+            color: #22282b;
+            border-width: 5px;
+            border-color: #f0f4f7;
+            }
+            /* sidebar: tab selected */
+            .skin-blue .main-sidebar .sidebar .sidebar-menu .active a {
+            color: #22282b;
+            background-color: #f2f2f2;
+            border-width: 5px;
+            border-color: #00aee3;
+            }
+            /* sidebar: tab hovered */
+            .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover {
+            background: #f2f2f2;
+            color: #22282b;
+            border-color: #00aee3;
+            }
+            /* box */
+            .box {
+            background: #f7f7f7;
+            border: 0px;
+            -webkit-box-shadow: none; -moz-box-shadow: none;box-shadow: none;
+            }
+            /* box: title */
+            .box-header .box-title {
+            font-size: 15px;
+            font-weight: bold;
+            font-family: "Arial"; 
+            }
+            /* textbox */
+            .form-control, .selectize-input, .selectize-control.single .selectize-input {
+            background: #ffffff;
+            color: #002045;
+            border-color: #00aee3;
+            height: 40px;
+            min-height: 40px;
+            font-size: 14px;
+            border-radius:0px
+            }
+            /* textbox: selected */
+            .form-control:focus, .selectize-input.focus {
+            color: #22282b;
+            background: #ffffff;
+            border: 2px solid #00aee3;
+            /* -webkit-box-shadow: inset 0px 0px 0px, 0px 0px 0px;*/
+            /* box-shadow: inset 0px 0px 0px, 0px 0px 0px;*/
+            }
+            /* drop-down menu */
+            .selectize-dropdown, .selectize-dropdown.form-control {
+            background: #fff7f9;
+            color: #22282b;
+            border-color: #00aee3;
+            border-radius: 0px;
+            min-height: 40px;
+            font-size: 13px;
+            }
+            /* verbatim text output */
+            .qt pre, .qt code {
+            font-family: "Arial" !important;
+            }
+            /* infobox */
+            .info-box {
+            background: #f7f7f7;
+            border-radius: 0px;
+            -webkit-box-shadow: none; -moz-box-shadow: none;box-shadow: none;
+            }
+
+            /* tabbox: title */
+            .nav-tabs-custom>.nav-tabs>li.header {
+            color: #22282b;
+            font-size: 13px;
+            font-weight: bold;
+            font-family: "Arial";
+            }
+            /* tabbox: tab color */
+            .nav-tabs-custom, .nav-tabs-custom .nav-tabs li.active:hover a, .nav-tabs-custom .nav-tabs li.active a {
+            background: #f0f4f7;
+            color: #22282b;
+            border-radius: 0px;
+            }
+            .nav-tabs-custom {
+            box-shadow: 0px #f0f4f7;
+            -webkit-box-shadow: none; -moz-box-shadow: none;box-shadow: none;
+            }
+            /* tabbox: active tab bg */
+            .nav-tabs-custom>.nav-tabs>li.active {
+            border-radius: 0px;
+            border-top-color: #f0f4f7;
+            box-shadow: 0px #f0f4f7;
+            }
+            /* tabbox: font color */
+            .nav-tabs-custom>.nav-tabs>li.active:hover>a, .nav-tabs-custom>.nav-tabs>li.active>a {
+            border-bottom-color: #00aee3; 
+            border-top-color: #f6efff;
+            border-right-color: #f6efff;
+            border-left-color: #f6efff;
+            color: #22282b;
+            font-size: 13px;
+            font-family: "Arial";
+            border-radius: 0px;
+            }
+            /* tabbox: inactive tabs background */
+            .nav-tabs-custom>.nav-tabs>li>a {
+            color: #22282b;
+            font-size: 13px;
+            font-weight: bold;
+            }
+            /* tabbox: top area back color */
+            .nav-tabs-custom, .nav-tabs-custom>.tab-content, .nav-tabs-custom>.nav-tabs {
+            border-bottom-color: #f6efff;
+            background: #ffffff;
+            }
+
+
+            '
+
+        )
+
+      )
+
+    ),
+ 
+    
+    
+##### Section 2 #####    
+    
+    tabItems(
+      tabItem(tabName = "property_nav",
+              fluidRow( 
+                box(width = 12, 
+                  solidHeader = TRUE, 
+                  collapsible = FALSE,
+                  #div(style="display:inline-block", textInput("addressIn", label = "Property address", "eg 10 York Mansions, Prince of Wales Drive", width = "550")),
+                  div(style="display:inline-block", textInput("postcodeIn", label = "Postcode", "SW11 4EZ", width = "125")),
+                  div(style="display:inline-block", selectInput("propertytypeIn", label = "Property Type", 
+                                                                c("Flats/Maisonettes" = "FLAT",
+                                                                  "Terraced" = "TERRACED",
+                                                                  "Semi-Detached" = "SEMI-DETACHED",
+                                                                  "Detached" = "DETACHED"),
+                                                                  width = "200")),
+                  div(style="display:inline-block", numericInput("propertyvalueIn", label = "Property Value", 450000, step = 500, width = "125")),
+                  div(style="display:inline-block", numericInput("loanamountIn", label = "Loan Amount", 350000, step = 500, width = "125")),
+                  div(style="display:inline-block", numericInput("interestrateIn", label = "Interest Rate", 7, width = "125")),
+                  div(style="display:inline-block", numericInput("loantermIn", label = "Loan Term", 18, width = "125"))
+                )
+              ),
+              
+              hr(),
+              actionButton("buyReport", "BUY REPORT")
+              
+          ),
+      tabItem(tabName = "report_nav",
+              
+              fluidRow(
+                box( width = 8,
+                     span(style = "font-family: Arial Black; font-size: 25px; font-weight:bold;", textOutput("r.addressOut"))
+                ),
+                box( width = 1
+                     
+                ),
+                box( width = 3,
+                     #title = "Evalurate Score", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 75px; font-weight: bold;", textOutput("evaluratescore"))
+                )
+              ),
+              
+              fluidRow(
+                box( width = 12,
+                     span(style = "font-family: Arial Black; font-size: 20px; font-weight:bold;", textOutput("r.heading_transaction"))
+                )
+              ),
+              
+              fluidRow(
+                box( width = 2,
+                     title = "Property Value", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.propertyvalueOut"))
+                ),
+                box( width = 2,
+                     title = "Loan Amount", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loanamountOut"))
+                ),
+                box( width = 2,
+                     title = "Loan to Value", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.ltvOut"))
+                ),
+                box( width = 2,
+                     title = "Interest Rate", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.interestrateOut"))
+                ),
+                box( width = 2,
+                     title = "Loan Term", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loantermOut"))
+                ),
+                box( width = 2
+
+                )
+              ),
+              
+              fluidRow(
+                box( width = 12,
+                     span(style = "font-family: Arial Black; font-size: 20px; font-weight:bold;", textOutput("r.heading_evalurate"))
+                )
+              ),
+              
+              fluidRow(
+                box( width = 3,
+                     title = "Probability to repay on time", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loanPD"))
+                ),
+                box( width = 3,
+                     title = "Expected amount recovered if loan defaults", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loanLGD"))
+                ),
+                box( width = 3,
+                     title = "Loan Risk", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("loanrisk"))
+                ),
+                box( width = 3,
+                     title = "Evalurate loan score", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 50px; font-weight: bold;", textOutput("loanscore"))
+                )
+                
+              ),
+              
+              fluidRow(
+                box( width = 8,
+                     title = "Location Description", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 15px;", textOutput("description"))
+                ),
+                box( width = 1
+                     
+                )
+              ),
+              
+              fluidRow(
+                box( width = 8,
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     leafletOutput("map", height = "400px")
+                ),
+                box( width = 1
+                     
+                ),
+                box( width = 3,
+                     title = "Evalurate location Score", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 50px; font-weight: bold;", textOutput("r.evAreaScore"))
+                )
+              ),
+              
+              fluidRow( 
+                box( width = 8,
+                     title = "Information and Disclaimer", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-family: Arial; font-size: 10px;", textOutput("disclaimer"))
+                )
+                
+              )
+              
+              )
+           
+      
+      
+    ),
+tags$script(src = "app.js") 
+    )
+    )
+
+
+server <- function(input, output, session) { 
+  # 
+  # addCssClass(selector = "a[data-value='report_nav']", class = "inactiveLink")
+  # 
+  # observeEvent(input$buyReport, {
+  #   addCssClass(selector = "a[data-value='report_nav']", class = "inactiveLink")
+  #   
+  # })
+  # observeEvent(input$Enable, {
+  #   removeCssClass(selector = "a[data-value='report_nav']", class = "inactiveLink")
+  # })
+  
+  observeEvent(input$buyReport, {
+    newtab <- switch(input$menu,
+                     "property_nav" = "report_nav",
+                     "report_nav" = "property_nav"
+    )
+    updateTabItems(session, "menu", newtab)
+    
+    removeClass(selector = "body", class = "sidebar-collapse")
+  })
+  
+  
+
+  # Load tables
+  ev_area_score <- read.csv("ev_area_score.csv")  
+  ev_pd_table <- read.csv("ev_pd_table.csv")  
+  mappostcodes <- read.csv("mappostcodesLdn.csv") 
+
+  # Report outputs 
+  output$r.addressOut = renderText({
+    paste("evalurate report for a", input$propertytypeIn, "located in", input$postcodeIn)
+  })
+  
+  
+  #property value
+  output$r.heading_transaction = renderText({paste("Your transaction summary")})
+  #property value
+  output$r.heading_evalurate = renderText({paste("evalurate risk assessment for this loan")})
+  #property value
+  output$r.propertyvalueOut = renderText({paste(input$propertyvalueIn)})
+  #loan amount
+  output$r.loanamountOut = renderText({paste(input$loanamountIn)})
+  #loan to value
+  output$r.ltvOut = renderText({paste(round((input$loanamountIn / input$propertyvalueIn)*100, digits = 1),"%", sep = "")})
+  #interest rate
+  output$r.interestrateOut = renderText({paste(input$interestrateIn,"%", sep = "")})
+  #loan term
+  output$r.loantermOut = renderText({paste(input$loantermIn)})
+  
+  #Postcode selection and output
+  PostcodeSelection <- reactive({
+    inputString <- paste(substr(input$postcodeIn, 1, nchar(input$postcodeIn)-0))
+    return(inputString)
+  })
+  
+  #evPostcode selection and output, reactive, for PD, LGD, AreaScore
+  evPostcodeSelection <- reactive({
+    inputStringP <- paste(substr(input$postcodeIn, 1, nchar(input$postcodeIn)-4))
+    return(inputStringP)
+  })
+  
+  #evDistrict selection
+  evDistrict <- reactive({
+    inputStringD <- paste(ev_area_score[which(ev_area_score$evPostcode == evPostcodeSelection()),]$District)
+    return(inputStringD)
+  })
+  
+  #evDistrict selection and output for PD, LGD
+  evDistrictandType <- reactive({
+    inputStringDT <- paste(ev_area_score[which(ev_area_score$evPostcode == evPostcodeSelection()),]$District, input$propertytypeIn, sep = ".")
+    return(inputStringDT)
+  })
+  
+  #evDistrict selection and output for PD, LGD
+  evALTV <- reactive({
+    numCol <- round((input$loanamountIn / input$propertyvalueIn)*(1+(input$interestrateIn/100)*(input$loantermIn/12)), digits = 2)
+    return(numCol)
+  })
+  
+  #probability to repay on time
+  output$r.loanPD <- renderText({paste(round(as.numeric(1 - ev_pd_table[which(ev_pd_table$Segment == evDistrictandType()),][evALTV()*100-50+2])*100, digits = 1), "%", sep = "")})
+  
+  #expected recovery at defualt
+  output$r.loanLGD <- renderText({paste(round(as.numeric(1+(min(0,0.9*0.925-evALTV())))*100, digits = 1), "%", sep = "")})
+  #output$r.loanLGD <- renderText({paste(round(as.numeric(1 + ev_lgd_table[which(ev_lgd_table$Segment == evDistrictandType()),][evALTV()*100-50+2])*100, digits = 1), "%", sep = "")})
+  
+  #area score
+  output$r.evAreaScore <- renderText({paste(ev_area_score[which(ev_area_score$evPostcode == evPostcodeSelection()),]$evAreaScore)})
+  
+
+  # still to connect
+  output$evaluratescore <- renderText(paste("A-"))
+  output$loanscore <- renderText(paste("A"))
+  output$loanrisk <- renderText(paste("Low"))
+  
+  
+  # Dummy description, needs to be by API from swiftcomplete
+  output$description <- renderText(paste("Situated in the South-west London Borough of Wandsworth, this 4 bedroom property is conveniently located less than half a mile from Battersea Park Railway Station.
+                                         
+                                         Leisure
+                                         The property is superbly positioned for popular destinations including the King's Road with restaurants, cafes and boutiques. The closest supermarkets are Clapham Junction Asda and Waitrose, which are less than a mile away from the property. Tesco (Clapham, around 1.6 miles away) is also within easy reach.
+                                         
+                                         For cinema lovers, there are two Cineworld cinemas and a Vue cinema nearby - Cineworld London - Fulham Road is about 1.3 miles away, Cineworld London - Wandsworth is slightly over 2 miles away and Vue London (Fulham Broadway) is around 1.6 miles away.
+                                         
+                                         For keen cyclists, there are three TFL cycle docking stations nearby - Prince of Wales Drive and Austin Road are both a short walk away and Albert Bridge Road is less than half a mile away.
+                                         
+                                         Transport
+                                         Sloane Square Underground Station (zone 1) is 1.2 miles away, which is served by the Circle and District lines, offering direct access to the City. Clapham Common Underground Station (zone 2) is also nearby, which is served by the Northern line offering frequent services to the West End.
+                                         Trains: There are 3 stations within walking distance, Battersea Park Railway Station is around 0.4 miles away (9 min walk), Queenstown Road (Battersea) Railway Station is around 0.5 miles away (9 min walk) and Wandsworth Road Railway Station is about 0.9 miles away (18 min walk).
+                                         Motorway Junctions: M4 J1 is the closest junction (5.4 miles).
+                                         Flights: London City Airport is the nearest airport (9.4 miles).
+                                         Healthcare
+                                         Hospitals: Royal Brompton Hospital (1.2 miles), Chelsea and Westminster Hospital (1.2 miles) and The Royal Marsden Hospital (London) (1.3 miles) are all near to the property.
+                                         Doctors: There are 3 surgeries within walking distance, Battersea Fields Practice is 0.2 miles away (4 min walk), Bridge Lane Group Practice is about 0.4 miles away (9 min walk) and Dr KROLL & partners is approximately 0.6 miles away (13 min walk)."))
+  
+    # Dummy disclaimer
+  output$disclaimer <- renderText(paste("Evalurate applies institutional investment and risk methodologies in combination with machine learning methods to produce an objective and independent assessment of expected loan performance.
+                                        Evalurate Score and Location Score are assessments of the quality of the loan and the location in which the relevant property is located to give you a fair and objective assessment of risk related to this proposition.
+                                        
+                                        Evaluerate, nor any other party makes any representation or warranty, expressly or implicitly, as to the validity, accuracy, reliability, suitability or completeness of any of the information (including any assumptions, data or projections underlying any estimates or projections) 
+                                        contained in this Document, and said information may not be relied upon in connection with any investment decision or any other particular purpose. Evalurate accepts no liability or responsibility to any person with respect to, or arising directly or indirectly out of the contents 
+                                        of or any omissions from this Document. This Document is being provided to the recipient and may not be reproduced, distributed, passed on or published, in whole or in part, to any person without the prior written consent of Evalurate. This Document may contain third-party trademarks, 
+                                        service marks, graphics, and logos. You are not granted any right or license with respect to any intellectual property rights, in particular, with respect to our trademarks or the trademarks of any third party. 
+                
+                                        The content of this Document is not to be construed as legal, business, investment or tax advice. Each recipient should consult with its own professional advisers for any such matters and advice. This Document may contain forward looking statements. 
+                                        While due care has been used in the preparation of forecast information, actual results may vary in a materially positive or negative manner. Forecasts and hypothetical examples are subject to uncertainty and contingencies outside Evalurate's control. Evalurate undertakes no obligation 
+                                        to update publicly or revise any forward-looking statement, whether as a result of new information, future events or otherwise, except as may be required by applicable law. This Document is provided for general informational purposes only, and Evalurate is not soliciting any action based upon it. 
+                                        This Document is not intended as, shall not be construed as and does not constitute an offer, recommendation or solicitation for the purchase or sale of any security or other financial instrument or financial service of Evalurate or of any other entity. 
+                                        Any offer of securities, other financial instruments or financial services would be made pursuant to offering materials to which prospective investors would be referred. Nothing in this Document is intended to constitute a financial promotion for the purpose of section 21 of the Financial Services and Markets Act 2000. 
+                                        By viewing this Document, the recipient acknowledges, and agrees to abide by, the aforementioned.
+
+                                         "))
+  
+  
+  # Create the map
+
+  iconfa <- makeAwesomeIcon(icon = "direction", markerColor = "black", iconColor = "black") 
+  
+  output$map <- renderLeaflet({
+    leaflet() %>%
+      addProviderTiles("Hydda.Full") %>%
+      addAwesomeMarkers(data = mappostcodes, lng = mappostcodes[which(mappostcodes$Postcode == PostcodeSelection()),]$Longitude, lat = mappostcodes[which(mappostcodes$Postcode == PostcodeSelection()),]$Latitude, icon = iconfa) %>% 
+      addLegend("bottomright", colors= NULL, labels = NULL, title= paste("Property is located in", input$postcodeIn))
+  })
+  
+  # Clicking on the export button will generate a pdf file 
+  output$export = downloadHandler(
+    filename = function() {"report.pdf"},
+    content = function(file) {
+      pdf(file, onefile = TRUE)
+      
+      dev.off()
+    }
+  )
+  
+  }
+
+shinyApp(ui, server)
