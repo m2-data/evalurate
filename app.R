@@ -73,21 +73,6 @@ ui <- fluidPage(
       
     ),
     
-    dashboardBody(
-      
-      # tags$script(HTML("$('body').addClass('fixed');")),
-      # 
-      # htmltools::tags$head(
-      #   
-      #   
-      #     
-      # ),
-    ),
-    
-    
-
-    
-    
         
         HTML('
         <section>
