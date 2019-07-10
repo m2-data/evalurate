@@ -121,13 +121,13 @@ ui <- dashboardPage(
             color: #22282b;
             background-color: #f2f2f2;
             border-width: 5px;
-            border-color: #00aee3;
+            border-color: #01b1b8;
             }
             /* sidebar: tab hovered */
             .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover {
             background: #f2f2f2;
             color: #22282b;
-            border-color: #00aee3;
+            border-color: #01b1b8;
             }
             /* box */
             .box {
@@ -244,7 +244,6 @@ ui <- dashboardPage(
                 box(width = 12, 
                   solidHeader = TRUE, 
                   collapsible = FALSE,
-                  
                   HTML(
                     '
         <div class="header_content">
@@ -303,8 +302,7 @@ ui <- dashboardPage(
                   div(style="display:inline-block", numericInput("loanamountIn", label = "Loan Amount", 350000, step = 500, width = "125")),
                   div(style="display:inline-block", numericInput("interestrateIn", label = "Interest Rate", 7, width = "125")),
                   div(style="display:inline-block", numericInput("loantermIn", label = "Loan Term", 18, width = "125")),
-                div( class="buttonRep",
-                  actionButton("buyReport", "BUY REPORT")),
+                div( class="buttonRep", actionButton("buyReport", "BUY REPORT")),
                   
               
 
@@ -395,7 +393,15 @@ ui <- dashboardPage(
               
               
               fluidRow(
-                box( width = 8,
+                box( 
+                  HTML(
+                    '<h2>Below is your bespoke report</h2>
+                    <p>Download and/or print your report. Your report will not be saved.</p>
+                    '
+                  ),
+                  downloadButton("export", label = "Download"),
+                  
+                  width = 8,
                      span(style = "font-family: Arial Black; font-size: 25px; font-weight:bold;", textOutput("r.addressOut"))
                 ),
                 box( width = 1
@@ -697,14 +703,41 @@ server <- function(input, output, session) {
   })
   
   # Clicking on the export button will generate a pdf file 
-  output$export = downloadHandler(
-    filename = function() {"report.pdf"},
+  output$export <- downloadHandler(
+    filename = function() {paste("report.pdf")},
+   
+   # filename = "report.pdf",
     content = function(file) {
-      pdf(file, onefile = TRUE)
       
-      dev.off()
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      tempReport <- file.path(tempdir(), "report.Rmd")
+      tempImg <- file.path(tempdir(), "evalurate.png")
+      file.copy("report.Rmd", tempReport, overwrite = TRUE)
+      file.copy("evalurate.png", tempImg, overwrite = TRUE)
+      
+      # Set up parameters to pass to Rmd document
+      params <- list(n = input$propertytypeIn, n2 = input$postcodeIn, n3 = input$interestrateIn, n4 = input$loantermIn, num =input$propertyvalueIn, num2 = input$loanamountvalueIn)
+
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
     }
   )
+    
+    
+    
+    # content = function(file) {
+    #   pdf(file, onefile = TRUE)
+    #   
+    #   dev.off()
+    # }
+  #)
   
   }
 

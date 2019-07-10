@@ -1,6 +1,6 @@
 ---
-title: "Your bespoke report"
-date: '`r paste("Date:",Sys.Date())`'
+# title: "Your bespoke report"
+# date: '`r paste("Date:",Sys.Date())`'
 mainfont: Comfortaa
 output:
   pdf_document:
@@ -12,15 +12,16 @@ header-includes:
     - \usepackage[default]{comfortaa}
     - \usepackage{fancyhdr}
     - \pagestyle{fancy}
-    # - \fancyhead[L]{\includegraphics[width=4cm]{evalurate.png}}
     - \fancypagestyle{plain}{\pagestyle{fancy}}
     - \setlength{\headheight}{24pt}
     - \usepackage{graphicx}
-    # - \usepackage{epstopdf}
+
 graphics: yes
 params:
   n: NA
   n2: NA
+  n3: NA
+  n4: NA
   num: NA
   num2: NA
 ---
@@ -31,7 +32,10 @@ params:
 ```{r setup, include=FALSE}
 
 knitr::opts_chunk$set(echo = FALSE)
+
 ```
+
+
 
 <!-- ![](evalurate.png) -->
 
@@ -42,11 +46,10 @@ knitr::opts_chunk$set(echo = FALSE)
 <!-- \includegraphics{evalurate.png} -->
 
 <!-- \fancyhead[L]{\includegraphics[width=4cm]{evalurate.png}} -->
-<!--
-```{r echo=FALSE, out.width='100%'}
+
+```{r echo=FALSE, out.width='30%'}
 knitr::include_graphics('evalurate.png')
 ```
--->
 
 
 <!-- \begin{figure*} \includegraphics{evalurate.eps} \end{figure*} -->
@@ -64,6 +67,8 @@ Download and/or print your report. Your report will not be saved.
 `r params$n2`
 `r params$num`
 `r params$num2`
+`r params$n3`
+`r params$n4`
 
 
 <!--
@@ -78,13 +83,13 @@ params$num2
 -->
 
 
-## Including Plots
+## Evalurate Score
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+<!--  ```{r pressure, echo=FALSE} -->
+<!--  plot(pressure) -->
+<!--  ``` -->
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
