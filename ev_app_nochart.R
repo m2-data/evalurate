@@ -11,6 +11,16 @@ library(leaflet)
 bool<- FALSE
 
 
+#custom function
+
+jscode <- '
+Shiny.addCustomMessageHandler("mymessage", function(message) {
+  alert(message);
+});
+'
+
+
+
 ##### Section 1 #####
 
 ui <- dashboardPage( 
@@ -40,6 +50,7 @@ ui <- dashboardPage(
   dashboardBody(
     
     tags$head(
+      tags$script(HTML(jscode)),
       tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
       tags$link(href="https://fonts.googleapis.com/css?family=Comfortaa:400,700", rel="stylesheet"),
       tags$title('evalurate'),
@@ -244,6 +255,7 @@ ui <- dashboardPage(
                 box(width = 12, 
                   solidHeader = TRUE, 
                   collapsible = FALSE,
+                  actionButton("bton", "JavaScript popup"),
                   HTML(
                     '
         <div class="header_content">
@@ -525,7 +537,26 @@ ui <- dashboardPage(
                      title = "Information and Disclaimer", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 10px;", textOutput("disclaimer"))
+                     span(style = "font-family: Arial; font-size: 10px;", textOutput("disclaimer")),
+                     
+                     HTML('
+                          <h1>TEST SWIFTCOMPLETE API</h1>
+        <div class="testCont">
+            <h2>Tests</h2>
+            <h3>Test GET Geocoding - Geocode</h3>
+            <form>
+                <label><b>Enter a valid PostCode starting with SW1: </b></label>
+                <input type="text" name="message" value="SW1 A0A" id="user_input">
+            </form>
+            <!-- <input type="submit" onclick="showInput();"><br/> -->
+            <label>Your input: </label>
+            <p><span id="display"></span></p>
+
+            <pre></pre>
+
+        
+        </div>
+                          ')
                 )
                 
               )
@@ -536,12 +567,19 @@ ui <- dashboardPage(
       
       
     ),
-tags$script(src = "app.js") 
+tags$script(src = "app.js"),
+tags$script(src = "mainAPI.js"),
+tags$script(src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js")
     )
     )
 
 
 server <- function(input, output, session) { 
+  
+  observeEvent(input$bton, {
+    session$sendCustomMessage("mymessage", "test")
+  })
+  
   
   output$distPlot <- renderPlot({
     # Take a dependency on input$goButton. This will run once initially,
