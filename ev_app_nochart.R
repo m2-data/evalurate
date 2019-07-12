@@ -78,20 +78,18 @@ ui <- dashboardPage(
             /* font */
            /* body, label, input, button, select, box,
             .h1, .h2, .h3, .h4, .h5, h1, h2, h3, h4, h5 {
-            font-family: "Arial";
             color: #161c21;
             }*/
             /* font: fix for h6 */
             /* messes up sidebar user section if included above */
             .h6, h6 {
-            font-family: ""Arial";
+
             }
             /* sidebar: logo */
             .skin-blue .main-header .logo {
             background: #f2f2f2;
             color: #161c21;
             font-size:22px;
-            font-family: "Arial";
             }
             /* sidebar: logo hover */
             .skin-blue .main-header .logo:hover {
@@ -119,7 +117,6 @@ ui <- dashboardPage(
             .main-sidebar .user-panel, .sidebar-menu, .sidebar-menu>li.header {
             background: #f2f2f2;
             font-size: 13px;
-            font-family: "Arial";
             }
             /* sidebar: tabs */
             .skin-blue .main-sidebar .sidebar .sidebar-menu a {
@@ -149,14 +146,13 @@ ui <- dashboardPage(
             /* box: title */
             .box-header .box-title {
             font-size: 15px;
-            font-weight: bold;
-            font-family: "Arial"; 
+
             }
             /* textbox */
             .form-control, .selectize-input, .selectize-control.single .selectize-input {
             background: #ffffff;
             color: #002045;
-            border-color: #00aee3;
+            border-color: #059ca2;
             height: 40px;
             min-height: 40px;
             font-size: 14px;
@@ -181,7 +177,7 @@ ui <- dashboardPage(
             }
             /* verbatim text output */
             .qt pre, .qt code {
-            font-family: "Arial" !important;
+            font-family: "Arial";
             }
             /* infobox */
             .info-box {
@@ -195,7 +191,6 @@ ui <- dashboardPage(
             color: #22282b;
             font-size: 13px;
             font-weight: bold;
-            font-family: "Arial";
             }
             /* tabbox: tab color */
             .nav-tabs-custom, .nav-tabs-custom .nav-tabs li.active:hover a, .nav-tabs-custom .nav-tabs li.active a {
@@ -221,7 +216,6 @@ ui <- dashboardPage(
             border-left-color: #f6efff;
             color: #22282b;
             font-size: 13px;
-            font-family: "Arial";
             border-radius: 0px;
             }
             /* tabbox: inactive tabs background */
@@ -255,7 +249,7 @@ ui <- dashboardPage(
                 box(width = 12, 
                   solidHeader = TRUE, 
                   collapsible = FALSE,
-                  actionButton("bton", "JavaScript popup"),
+                 # actionButton("bton", "JavaScript popup"),
                   HTML(
                     '
         <div class="header_content">
@@ -405,102 +399,148 @@ ui <- dashboardPage(
               
               
               fluidRow(
-                box( 
+                box(width = 12,
                   HTML(
                     '<h2>Below is your bespoke report</h2>
                     <p>Download and/or print your report. Your report will not be saved.</p>
                     '
                   ),
-                  downloadButton("export", label = "Download"),
-                  
+                  downloadButton("export", label = "Download")
+                )
+              ),
+              fluidRow(
+                box(
+                  width = 2,
+                  tags$img(src = "evalurate.png", width = "150px")
+                )
+              ),
+              fluidRow(
+                box( 
                   width = 8,
-                     span(style = "font-family: Arial Black; font-size: 25px; font-weight:bold;", textOutput("r.addressOut"))
-                ),
-                box( width = 1
-                     
-                ),
-                box( width = 3,
+                     span(style = "font-size: 25px; font-weight:bold;", textOutput("r.addressOut"))
+                )
+              #   box( width = 4
+              #   )
+              #  
+              # ),
+              ),
+              fluidRow(
+                box( width = 12,
+                     span(style = "font-size: 20px; font-weight:bold;", textOutput("r.heading_score"))
+                )
+                
+              ),
+              fluidRow(
+                box( width = 11,
                      #title = "Evalurate Score", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 75px; font-weight: bold;", textOutput("evaluratescore"))
+                     span(style = "font-size: 75px; font-weight: bold;", textOutput("evaluratescore"))
                 )
               ),
               
-              fluidRow(
-                box( width = 12,
-                     span(style = "font-family: Arial Black; font-size: 20px; font-weight:bold;", textOutput("r.heading_transaction"))
-                )
-              ),
+              # fluidRow(
+              #   box( width = 12,
+              #        span(style = "font-size: 20px; font-weight:bold;", textOutput("r.heading_transaction"))
+              #   )
+              # ),
               
               fluidRow(
                 box( width = 2,
                      title = "Property Value", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.propertyvalueOut"))
+                     span(style = "font-size: 30px; font-weight: bold;", textOutput("r.propertyvalueOut"))
                 ),
                 box( width = 2,
                      title = "Loan Amount", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loanamountOut"))
+                     span(style = "font-size: 30px; font-weight: bold;", textOutput("r.loanamountOut"))
                 ),
                 box( width = 2,
                      title = "Loan to Value", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.ltvOut"))
+                     span(style = "font-size: 30px; font-weight: bold;", textOutput("r.ltvOut"))
                 ),
                 box( width = 2,
                      title = "Interest Rate", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.interestrateOut"))
+                     span(style = "font-size: 30px; font-weight: bold;", textOutput("r.interestrateOut"))
                 ),
                 box( width = 2,
                      title = "Loan Term", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loantermOut"))
+                     span(style = "font-size: 30px; font-weight: bold;", textOutput("r.loantermOut"))
                 ),
                 box( width = 2
 
                 )
               ),
-              
               fluidRow(
                 box( width = 12,
-                     span(style = "font-family: Arial Black; font-size: 20px; font-weight:bold;", textOutput("r.heading_evalurate"))
+                     span(style = "font-size: 20px; font-weight:bold;", textOutput("r.heading_loanScore"))
+                  
+                )
+              ),
+              fluidRow(
+                box( width = 11,
+                     #title = "Evalurate Loan core", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-size: 75px; font-weight: bold;", textOutput("loanscore"))
                 )
               ),
               
+              # fluidRow(
+              #   box( width = 12,
+              #        span(style = "font-size: 20px; font-weight:bold;", textOutput("r.heading_evalurate"))
+              #   )
+              # ),
+              
               fluidRow(
                 box( width = 3,
-                     title = "Probability to repay on time", 
+                     title = "Probability to repay on time",
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loanPD"))
+                     span(class="riskTitle", style = "font-size: 30px; font-weight: bold;", textOutput("r.loanPD"))
                 ),
                 box( width = 3,
                      title = "Expected amount recovered if loan defaults", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("r.loanLGD"))
+                     span(class="riskTitle", style = "font-size: 30px; font-weight: bold;", textOutput("r.loanLGD"))
                 ),
                 box( width = 3,
                      title = "Loan Risk", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 30px; font-weight: bold;", textOutput("loanrisk"))
-                ),
-                box( width = 3,
-                     title = "Evalurate loan score", 
-                     solidHeader = TRUE, 
-                     collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 50px; font-weight: bold;", textOutput("loanscore"))
+                     span(class="riskTitle", style = "font-size: 30px; font-weight: bold;", textOutput("loanrisk"))
+                )
+                # box( width = 3,
+                #      title = "Evalurate loan score", 
+                #      solidHeader = TRUE, 
+                #      collapsible = FALSE,
+                #      span(style = "font-size: 50px; font-weight: bold;", textOutput("loanscore"))
+                # )
+                
+              ),
+              fluidRow(
+                box( width = 12,
+                     span(style = "font-size: 20px; font-weight:bold;", textOutput("r.heading_location"))
                 )
                 
+              ),
+              fluidRow(
+                box( width = 11,
+                     #title = "Evalurate Score", 
+                     solidHeader = TRUE, 
+                     collapsible = FALSE,
+                     span(style = "font-size: 75px; font-weight: bold;", textOutput("r.evAreaScore"))
+                )
               ),
               
               fluidRow(
@@ -520,16 +560,16 @@ ui <- dashboardPage(
                      solidHeader = TRUE, 
                      collapsible = FALSE,
                      leafletOutput("map", height = "400px")
-                ),
-                box( width = 1
-                     
-                ),
-                box( width = 3,
-                     title = "Evalurate location Score", 
-                     solidHeader = TRUE, 
-                     collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 50px; font-weight: bold;", textOutput("r.evAreaScore"))
                 )
+                # box( width = 1
+                #      
+                # ),
+                # box( width = 3,
+                #      title = "Evalurate location Score", 
+                #      solidHeader = TRUE, 
+                #      collapsible = FALSE,
+                #      span(style = "font-size: 50px; font-weight: bold;", textOutput("r.evAreaScore"))
+                # )
               ),
               
               fluidRow( 
@@ -537,7 +577,7 @@ ui <- dashboardPage(
                      title = "Information and Disclaimer", 
                      solidHeader = TRUE, 
                      collapsible = FALSE,
-                     span(style = "font-family: Arial; font-size: 10px;", textOutput("disclaimer")),
+                     span(style = "font-size: 10px;", textOutput("disclaimer")),
                      
                      HTML('
                           <h1>TEST SWIFTCOMPLETE API</h1>
@@ -625,14 +665,20 @@ server <- function(input, output, session) {
 
   # Report outputs 
   output$r.addressOut = renderText({
-    paste("evalurate report for a", input$propertytypeIn, "located in", input$postcodeIn)
+    paste(input$propertytypeIn, "located in", input$postcodeIn)
   })
   
   
   #property value
-  output$r.heading_transaction = renderText({paste("Your transaction summary")})
+  output$r.heading_transaction = renderText({paste("TRANSACTION SUMMARY")})
+  #property score
+  output$r.heading_score = renderText({paste("EVALURATE SCORE")})
+  #loan score
+  output$r.heading_loanScore = renderText({paste("EVALURATE LOAN SCORE")})
   #property value
-  output$r.heading_evalurate = renderText({paste("evalurate risk assessment for this loan")})
+  output$r.heading_evalurate = renderText({paste("RISK ASSESSMENT FOR LOAN")})
+  #location score
+  output$r.heading_location = renderText({paste("LOCATION SCORE")})
   #property value
   output$r.propertyvalueOut = renderText({paste(input$propertyvalueIn)})
   #loan amount
@@ -740,6 +786,9 @@ server <- function(input, output, session) {
       addLegend("bottomright", colors= NULL, labels = NULL, title= paste("Property is located in", input$postcodeIn))
   })
   
+  # mapshot(map, file = "~/map.png")
+  # 
+  
   # Clicking on the export button will generate a pdf file 
   output$export <- downloadHandler(
     filename = function() {paste("report.pdf")},
@@ -756,7 +805,7 @@ server <- function(input, output, session) {
       file.copy("evalurate.png", tempImg, overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(n = input$propertytypeIn, n2 = input$postcodeIn, n3 = input$interestrateIn, n4 = input$loantermIn, num =input$propertyvalueIn, num2 = input$loanamountvalueIn)
+      params <- list(propType = input$propertytypeIn, postC = input$postcodeIn, intRate = input$interestrateIn, loanT = input$loantermIn, pValue =input$propertyvalueIn, loanValue = input$loanamountIn, loanAmInt = input$loanamountIn)
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document

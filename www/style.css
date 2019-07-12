@@ -8,6 +8,28 @@ html, body, section{
     padding-inline-start: 0;
     font-family: 'Comfortaa', Georgia, cursive;
 }
+.col-sm-2{
+    min-width: 130px;
+}
+#shiny-tab-report_nav{
+    padding: 20px;
+}
+#shiny-tab-report_nav .row:nth-child(2){
+    padding-top: 70px;
+}
+.box-header h3{
+    min-width: 130px;
+    font-family: 'Comfortaa', Georgia, cursive;
+}
+.col-sm-12 span{
+    color: #f3914e;
+}
+.col-sm-12{
+    padding: 40px 0 0;
+}
+.col-sm-8, .col-sm-2, .col-sm-11, .col-sm-3{
+    padding: 0;
+}
 .content{
     padding: 0;
 }
@@ -16,13 +38,31 @@ html, body, section{
     background: #FFF !important;
     height: 100% !important;
 }
-
+/* .shiny-bound-output{
+    padding-left: 15px;
+} */
 .box-body{
     padding: 0;
+}
+.box-body span{
+    font-weight: normal !important;
 }
 .box{
     background: #FFF !important;
     margin-bottom: 0 !important;
+}
+.box-header{
+    padding: 0 10px 0 0;
+    color: #f3924f;
+}
+.row{
+    margin: 0;
+}
+#shiny-tab-report_nav .row{
+    padding: 10px;
+}
+#shiny-tab-property_nav .col-sm-12{
+    padding: 0;
 }
 .container-fluid {
     padding: 0;
