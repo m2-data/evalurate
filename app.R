@@ -59,19 +59,19 @@ ui <- fluidPage(
     
     
     
-    dashboardSidebar(
-      hr(),
-      sidebarMenu(id = "menu",
-                  menuItem("Property", tabName = "property_nav", selected = TRUE),
-                  menuItem("Report", tabName = "report_nav"),
-                  menuItem("About", tabName = "readme", icon = icon("info"))
-                  
-      ),
-      
-      helpText("Developed by ", 
-               a("evalurate", href = "http://..."), ".")
-      
-    ),
+    # dashboardSidebar(
+    #   hr(),
+    #   sidebarMenu(id = "menu",
+    #               menuItem("Property", tabName = "property_nav", selected = TRUE),
+    #               menuItem("Report", tabName = "report_nav"),
+    #               menuItem("About", tabName = "readme", icon = icon("info"))
+    #               
+    #   ),
+    #   
+    #   helpText("Developed by ", 
+    #            a("evalurate", href = "http://..."), ".")
+    #   
+    # ),
     
         
         HTML('
